@@ -1,70 +1,109 @@
-<div style="padding:18px;max-width: 1024px;margin:0 auto;background-color:#fff;color:#333">
-<h1>webman</h1>
+# usdt-polling-payment-system-open-source
 
-基于<a href="https://www.workerman.net" target="__blank">workerman</a>开发的超高性能PHP框架
+# 项目简介
+
+usdt轮询收款系统-开源版是一款专为数字资产交易场景设计的轻量化、高安全性收款解决方案，核心基于USDT（TRC-20）区块链网络的交易查询机制，通过定时轮询钱包地址交易记录，实现自动化收款对账、实时到账通知等核心功能。系统采用开源架构设计，支持开发者根据业务需求灵活二次开发，适配电商支付、虚拟商品充值、服务收费等多种场景，旨在解决传统数字资产收款过程中地址管理混乱、到账校验繁琐、数据安全无保障等痛点，为个人开发者、中小企业提供低成本、可信赖的数字资产收款技术支撑。
+
+系统具备完整的用户权限体系、安全的登录验证机制及加密的数据存储方案，确保交易数据的安全性与隐私性；同时提供清晰的API接口文档，支持与现有业务系统快速对接，降低集成门槛。
+
+# 核心特色功能
+
+## 一、精细化多角色权限管理
+
+采用RBAC（基于角色的访问控制）模型，预设超级管理员、财务管理员、运营管理员、普通操作员等多类角色，支持自定义角色权限。不同角色拥有差异化的操作权限：超级管理员可配置系统全局参数、管理所有用户及角色；财务管理员专注于对账统计、资金明细查看；运营管理员可管理收款地址、配置通知规则；普通操作员仅能查看指定范围内的收款记录，有效实现权责分离，避免权限滥用导致的操作风险。
+
+## 二、两步验证安全登录机制
+
+在账号密码登录基础上，增加两步验证（2FA）安全机制，支持谷歌验证码（Google Authenticator）、邮箱验证码、APP确认 三种验证方式可选。用户登录时，需先完成账号密码校验，再输入动态验证码完成二次验证，双重保障登录安全。同时支持登录异常检测，当检测到异地登录、异常IP登录时，自动触发登录提醒并暂时限制登录权限，进一步降低账号被盗风险。
+
+## 三、一人一地址精准化管理
+
+实现“用户/订单-收款地址”一对一绑定机制，系统可自动为每个用户或每笔订单分配唯一的USDT收款地址。用户发起支付时，仅需向专属地址转账，系统通过地址关联关系，可快速精准匹配对应的用户信息及订单信息，无需用户手动备注，大幅降低对账难度。同时支持收款地址批量生成、回收、禁用等管理功能，地址状态实时同步，避免重复使用或无效地址导致的资金风险。
+
+## 四、API接口对称加密传输
+
+系统对外提供的所有API接口（包括地址分配、交易查询、到账通知、数据统计等）均采用AES-256对称加密算法进行数据传输。接口调用时，需通过密钥验证+时间戳防篡改校验，确保请求数据在传输过程中不被窃取、篡改。同时提供完整的API接口文档，包含接口参数说明、调用示例、错误码解释等，支持开发者快速集成，适配Java、Python、PHP等多种开发语言。
+
+## 五、钱包数据非对称加密存储
+
+核心钱包数据（如私钥、助记词、收款地址关联信息等）采用RSA-2048非对称加密算法进行存储，私钥加密后存储于本地数据库，公钥用于数据加密和解密验证，确保即使数据库被非法访问，攻击者也无法获取有效的钱包核心信息。同时系统支持钱包数据备份与恢复功能，备份文件同样经过加密处理，进一步保障资金安全。
+
+## 六、高效USDT轮询对账核心功能
+
+支持自定义轮询频率（最小间隔1秒），实时查询指定钱包地址的USDT交易记录，自动识别到账交易并与系统内订单匹配。内置交易金额校验、区块确认数校验功能，可设置最小确认数（如6个区块），避免因交易回滚导致的资金损失。对账完成后，自动更新订单状态并记录交易明细（包括交易哈希、到账时间、区块高度、手续费等）。
+
+## 七、多渠道实时到账通知
+
+支持短信、邮箱、WebHook等多种通知方式，用户支付到账后，系统可实时向用户发送到账通知，同时向运营/财务人员发送对账提醒。通知内容可自定义配置，包含订单号、支付金额、到账时间、收款地址等关键信息，确保相关人员及时掌握交易状态。
+
+## 八、可视化数据统计与报表导出
+
+内置可视化数据统计面板，支持按时间维度（日/周/月/年）、交易类型、用户维度统计收款金额、交易笔数、待对账订单数等核心数据。支持导出Excel格式的交易明细报表、对账报表，报表包含完整的交易信息，可直接用于财务核算，降低财务人员工作难度。
+
+## 九、开源可扩展架构设计
+
+系统源代码完全开源，采用前后端分离架构（前端Vue，后端Webman），代码结构清晰，注释完善，便于开发者阅读和二次开发。支持扩展适配不同的区块链网络（如TRC-20、ERC-20、BEP-20等），可通过插件化方式新增支付币种、通知渠道、验证方式等功能，满足不同业务场景的个性化需求。
+
+# 技术栈选型
+
+## 前端技术栈
+
+Vue 3 + Vite +  Ant Design
+
+## 后端技术栈
+
+Webman + PHP 8.3 + MySQL + Redis
+
+## 区块链相关
+
+TRC-20/TronGrid
+
+## 安全相关
+
+AES-256加密、RSA-2048加密、Google Authenticator（两步验证）、JWT（身份认证）
+
+# 快速开始
+
+## 1. 环境要求
+
+- PHP 8.3+
+
+- MySQL 5.7+/8.0+
+
+- Redis 5.0+
+
+- 需要申请对应区块链网络的API密钥（TronGrid API Key）
+
+## 2. 部署步骤
+
+1. 克隆代码仓库：`git clone https://github.com/NopWoker/UsdtPollSystem.git`
+
+2. 进入项目目录，`.env`文件 配置数据库连接信息
+
+3. 导入数据库脚本（sql目录下的init.sql文件）
+
+4. 配置API密钥、加密密钥等核心参数（根目录/config目录下的apikey.php文件）
+
+5. 编译并启动后端服务：
+Liunx：`php start.php start -d` 
+Windows：双击 `windows.bat` 或者命令行运行 `php windows.php` 启动
+
+6.  访问系统：浏览器打开 http://localhost:8787（默认地址，可在 `根目录/server.php` 配置文件中修改 `listen`字段中的端口）
+
+## 3. 初始账号
+
+超级管理员账号：admin  密码：123456（首次登录需强制修改密码，并开启两步验证）
 
 
-<h1>学习</h1>
 
-<ul>
-  <li>
-    <a href="https://www.workerman.net/webman" target="__blank">主页 / Home page</a>
-  </li>
-  <li>
-    <a href="https://webman.workerman.net" target="__blank">文档 / Document</a>
-  </li>
-  <li>
-    <a href="https://www.workerman.net/doc/webman/install.html" target="__blank">安装 / Install</a>
-  </li>
-  <li>
-    <a href="https://www.workerman.net/questions" target="__blank">问答 / Questions</a>
-  </li>
-  <li>
-    <a href="https://www.workerman.net/apps" target="__blank">市场 / Apps</a>
-  </li>
-  <li>
-    <a href="https://www.workerman.net/sponsor" target="__blank">赞助 / Sponsors</a>
-  </li>
-  <li>
-    <a href="https://www.workerman.net/doc/webman/thanks.html" target="__blank">致谢 / Thanks</a>
-  </li>
-</ul>
+# 许可证
 
-<div style="float:left;padding-bottom:30px;">
+本项目采用 Apache-2.0 开源许可证，详情请查看LICENSE文件。
 
-  <h1>赞助商</h1>
+# 联系方式
 
-  <h4>特别赞助</h4>
-  <a href="https://www.crmeb.com/?form=workerman" target="__blank">
-    <img src="https://www.workerman.net/img/sponsors/6429/20230719111500.svg" width="200">
-  </a>
+若你在使用过程中遇到问题，或有合作需求，可通过以下方式联系：
 
-  <h4>铂金赞助</h4>
-  <a href="https://www.fadetask.com/?from=workerman" target="__blank"><img src="https://www.workerman.net/img/sponsors/1/20230719084316.png" width="200"></a>
-  <a href="https://www.yilianyun.net/?from=workerman" target="__blank" style="margin-left:20px;"><img src="https://www.workerman.net/img/sponsors/6218/20230720114049.png" width="200"></a>
+- GitHub Issues：https://github.com/NopWoker/UsdtPollSystem/issues
 
-
-</div>
-
-
-<div style="float:left;padding-bottom:30px;clear:both">
-
-  <h1>请作者喝咖啡</h1>
-
-<img src="https://www.workerman.net/img/wx_donate.png" width="200">
-<img src="https://www.workerman.net/img/ali_donate.png" width="200">
-<br>
-<b>如果您觉得webman对您有所帮助，欢迎捐赠。</b>
-
-
-</div>
-
-
-<div style="clear: both">
-<h1>LICENSE</h1>
-The webman is open-sourced software licensed under the MIT.
-</div>
-
-</div>
-
-
+- 邮箱：chenjunjiedeveloper@gmail.com
