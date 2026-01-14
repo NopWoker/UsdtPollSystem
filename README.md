@@ -1,4 +1,4 @@
-# usdt-polling-payment-system-open-source
+# USDT收款系统-开源版(1人1地址)
 
 # 项目简介
 

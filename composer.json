@@ -26,7 +26,14 @@
   "require": {
     "php": ">=8.1",
     "workerman/webman-framework": "^2.1",
-    "monolog/monolog": "^2.0"
+    "monolog/monolog": "^2.0",
+    "saithink/saiadmin": "^5.1",
+    "vlucas/phpdotenv": "^5.6",
+    "webman/console": "^2.1",
+    "webman/cache": "^2.1",
+    "webman/redis": "^2.1",
+    "illuminate/events": "^12.37",
+    "web3p/ethereum-util": "^0.1.4"
   },
   "suggest": {
     "ext-event": "For better performance. "
